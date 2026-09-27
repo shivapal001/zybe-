@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zybe — Your Music. Your Way.</title>
+<meta name="description" content="Zybe is a free, independent Android music app. Simple, fast and user-focused. Not affiliated with Spotify.">
+<meta property="og:title" content="Zybe — Your Music. Your Way.">
+<meta property="og:description" content="A free Android music experience built for people who want a simple and enjoyable way to listen.">
+<meta property="og:type" content="website">
+<link rel="icon" href="icons/app-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b10; --bg-2:#111118; --card:#16161f; --card-2:#1c1c27;
+    --line:#26262f; --text:#f3f1ee; --muted:#9b98a6; --muted-2:#6e6c7a;
+    --coral:#ff5d73; --gold:#ffd166; --ring: rgba(255,93,115,.45);
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'Inter',system-ui,sans-serif; line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.brand{font-family:'Space Grotesk',system-ui,sans-serif;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+  section{padding:96px 0;}
+  @media(max-width:640px){section{padding:64px 0;}}
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{outline:2px solid var(--coral); outline-offset:3px; border-radius:6px;}
+
+  /* NAV */
+  header{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    background:rgba(11,11,16,.72); border-bottom:1px solid var(--line);
+  }
+  nav.wrap{display:flex; align-items:center; justify-content:space-between; height:72px;}
+  .brand{font-size:22px; font-weight:700; display:flex; align-items:center; gap:10px;}
+  .brand-icon{width:28px; height:28px; border-radius:8px;}
+  .cta-icon{width:64px; height:64px; border-radius:16px; margin:0 auto 20px; box-shadow:0 10px 30px -10px rgba(255,93,115,.5);}
+  .nav-links{display:flex; gap:34px; font-size:15px; color:var(--muted);}
+  .nav-links a:hover{color:var(--text);}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px 22px; border-radius:12px; font-weight:600; font-size:15px;
+    border:1px solid transparent; cursor:pointer; transition:transform .15s ease, background .15s ease;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--coral),#ff8a5c); color:#0b0b10;}
+  .btn-primary:hover{transform:translateY(-1px);}
+  .btn-ghost{background:transparent; border-color:var(--line); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--muted-2);}
+  .btn-sm{padding:9px 16px; font-size:14px;}
+  .nav-cta{display:none;}
+  @media(min-width:860px){.nav-cta{display:inline-flex;} .nav-links{display:flex;}}
+  @media(max-width:859px){.nav-links{display:none;}}
+
+  /* HERO */
+  .hero{padding:88px 0 40px; position:relative; overflow:hidden;}
+  .hero-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:56px; align-items:center;}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+  .eyebrow-free{display:inline-block; font-size:13px; color:var(--gold); background:rgba(255,209,102,.1); border:1px solid rgba(255,209,102,.25); padding:6px 12px; border-radius:20px; margin-bottom:22px;}
+  .hero h1{font-size:56px; line-height:1.05; margin:0 0 20px; letter-spacing:-0.01em;}
+  @media(max-width:640px){.hero h1{font-size:38px;}}
+  .hero p.sub{font-size:18px; color:var(--muted); max-width:480px; margin:0 0 32px;}
+  .hero-actions{display:flex; gap:14px; flex-wrap:wrap;}
+
+  /* Waveform + phone visual */
+  .visual{position:relative; height:460px; display:flex; align-items:center; justify-content:center;}
+  .wave-field{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:5px; opacity:.55; filter:blur(.2px);}
+  .wave-field span{width:5px; border-radius:3px; background:linear-gradient(180deg,var(--coral),var(--gold)); animation:bounce 1.6s ease-in-out infinite;}
+  @keyframes bounce{0%,100%{transform:scaleY(.3);} 50%{transform:scaleY(1);}}
+  @media (prefers-reduced-motion: reduce){.wave-field span{animation:none;}}
+  .phone{
+    position:relative; width:230px; height:460px; border-radius:38px;
+    background:#0e0e14; border:1px solid var(--line);
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.6); padding:10px; z-index:2;
+  }
+  .phone-screen{
+    height:100%; border-radius:28px; overflow:hidden;
+    background:linear-gradient(165deg,#1b1b26,#100f16);
+    display:flex; flex-direction:column; padding:20px 16px; gap:14px;
+  }
+  .phone-notch{width:46px; height:5px; border-radius:3px; background:#2b2b36; margin:0 auto 6px;}
+  .now-playing-art{aspect-ratio:1; border-radius:14px; background:linear-gradient(135deg,var(--coral),var(--gold)); margin-top:10px;}
+  .now-playing-title{font-size:14px; font-weight:600; margin-top:14px;}
+  .now-playing-sub{font-size:12px; color:var(--muted-2);}
+  .mini-bars{display:flex; gap:3px; align-items:flex-end; height:24px; margin-top:auto;}
+  .mini-bars span{width:4px; border-radius:2px; background:var(--coral); animation:bounce 1.4s ease-in-out infinite;}
+  .phone-screen--photo{padding:0;}
+  .phone-screen--photo img{width:100%; height:100%; object-fit:cover; border-radius:28px;}
+
+  /* SECTION HEAD */
+  .head{max-width:560px; margin-bottom:48px;}
+  .head h2{font-size:34px; margin:0 0 12px; letter-spacing:-0.01em;}
+  .head p{color:var(--muted); font-size:16px; margin:0;}
+
+  /* FEATURES */
+  .feature-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media(max-width:860px){.feature-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:560px){.feature-grid{grid-template-columns:1fr;}}
+  .f-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:26px; position:relative;
+  }
+  .f-card h3{font-size:17px; margin:14px 0 8px;}
+  .f-card p{font-size:14px; color:var(--muted); margin:0;}
+  .f-icon{width:38px; height:38px; border-radius:10px; background:rgba(255,93,115,.12); display:flex; align-items:center; justify-content:center; color:var(--coral);}
+  .f-icon svg{width:19px; height:19px;}
+  .soon{position:absolute; top:22px; right:22px; font-size:11px; color:var(--muted-2); border:1px solid var(--line); padding:3px 9px; border-radius:20px;}
+
+  /* APP PREVIEW */
+  .preview-strip{display:flex; gap:20px; overflow-x:auto; padding:6px 4px 20px; scrollbar-width:thin;}
+  .preview-card{flex:0 0 200px; scroll-snap-align:start;}
+  .preview-strip{scroll-snap-type:x mandatory;}
+  .preview-frame{
+    width:200px; height:400px; border-radius:26px; background:#0e0e14; border:1px solid var(--line);
+    padding:8px; box-shadow:0 20px 50px -18px rgba(0,0,0,.55);
+  }
+  .preview-screen{
+    height:100%; border-radius:19px; background:linear-gradient(165deg,var(--card-2),#100f16);
+    display:flex; align-items:center; justify-content:center; color:var(--muted-2); font-size:13px;
+    overflow:hidden;
+  }
+  .preview-screen img{width:100%; height:100%; object-fit:cover;}
+  .preview-label{margin-top:14px; font-size:14px; color:var(--muted); text-align:center;}
+
+  /* WHY */
+  .why-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  @media(max-width:860px){.why-grid{grid-template-columns:1fr 1fr;}}
+  .why-card{border:1px solid var(--line); border-radius:var(--radius); padding:24px; background:var(--bg-2);}
+  .why-card .num{font-family:'Space Grotesk'; font-size:26px; color:var(--coral); margin-bottom:10px; display:block;}
+  .why-card h3{font-size:16px; margin:0 0 6px;}
+  .why-card p{font-size:13px; color:var(--muted); margin:0;}
+
+  /* COMPARE */
+  .compare-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--card);}
+  table{width:100%; border-collapse:collapse; min-width:520px;}
+  th,td{padding:16px 22px; text-align:left; font-size:14px; border-bottom:1px solid var(--line);}
+  thead th{color:var(--muted); font-weight:600; font-size:13px; text-transform:none;}
+  thead th{display:table-cell;}
+  th .th-icon, th img.th-icon{width:18px; height:18px; border-radius:5px; vertical-align:-4px; margin-right:7px;}
+  .th-icon--generic{display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:5px; background:var(--card-2); color:var(--muted); font-size:11px; vertical-align:-4px; margin-right:7px;}
+  tbody tr:last-child td{border-bottom:none;}
+  td.yes{color:var(--gold); font-weight:600;}
+  td.zybe-col{color:var(--text);}
+  .compare-note{font-size:13px; color:var(--muted-2); margin-top:16px;}
+  .disclaim{margin-top:10px; font-size:13px; color:var(--muted); padding:14px 18px; border:1px solid var(--line); border-radius:12px; background:var(--bg-2);}
+
+  /* DOWNLOAD CTA */
+  .cta-block{
+    border-radius:24px; padding:64px 48px; text-align:center;
+    background:radial-gradient(circle at 30% 20%, rgba(255,93,115,.18), transparent 60%), var(--card);
+    border:1px solid var(--line);
+  }
+  @media(max-width:640px){.cta-block{padding:44px 22px;}}
+  .cta-block h2{font-size:32px; margin:0 0 12px;}
+  .cta-block p{color:var(--muted); margin:0 0 30px;}
+  .meta-row{display:flex; gap:28px; justify-content:center; margin-top:30px; flex-wrap:wrap; font-size:13px; color:var(--muted-2);}
+  .meta-row b{color:var(--text); display:block; font-size:14px; margin-bottom:2px;}
+
+  /* INSTALL STEPS */
+  .steps{counter-reset:step; display:grid; gap:16px;}
+  .step{display:flex; gap:18px; align-items:flex-start; border:1px solid var(--line); border-radius:14px; padding:20px 22px; background:var(--bg-2);}
+  .step-num{
+    counter-increment:step; flex:0 0 34px; height:34px; border-radius:10px;
+    background:linear-gradient(135deg,var(--coral),var(--gold)); color:#0b0b10; font-weight:700;
+    display:flex; align-items:center; justify-content:center; font-size:15px;
+  }
+  .step h3{margin:0 0 4px; font-size:15px;}
+  .step p{margin:0; font-size:14px; color:var(--muted);}
+
+  /* FAQ */
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-q{
+    width:100%; text-align:left; background:none; border:none; color:var(--text);
+    font-size:16px; font-family:inherit; padding:20px 4px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;
+  }
+  .faq-q .plus{transition:transform .2s ease; color:var(--muted-2); font-size:20px;}
+  .faq-item[data-open="true"] .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+  .faq-a p{margin:0 0 20px; color:var(--muted); font-size:14px; max-width:640px;}
+
+  /* SUPPORT */
+  .support-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media(max-width:700px){.support-grid{grid-template-columns:1fr;}}
+  .sup-card{border:1px solid var(--line); border-radius:var(--radius); padding:28px; background:var(--card);}
+  .sup-card h3{margin:0 0 8px; font-size:18px;}
+  .sup-card p{margin:0 0 20px; color:var(--muted); font-size:14px;}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--line); padding:56px 0 40px;}
+  .foot-grid{display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap;}
+  .foot-links{display:flex; gap:22px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
+  .foot-links a:hover{color:var(--text);}
+  .foot-bottom{margin-top:36px; padding-top:24px; border-top:1px solid var(--line); font-size:13px; color:var(--muted-2); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a href="#top" class="brand"><img src="icons/app-icon.png" alt="" class="brand-icon">Zybe</a>
+    <div class="nav-links">
+      <a href="#top">Home</a>
+      <a href="#features">Features</a>
+      <a href="#compare">Compare</a>
+      <a href="#faq">FAQ</a>
+      <a href="#support">Support</a>
+    </div>
+    <a href="#download" class="btn btn-primary btn-sm nav-cta">Download APK</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow-free">Free · Android · Independent</span>
+        <h1>Your Music.<br>Your Way.</h1>
+        <p class="sub">Meet Zybe — a free Android music experience built for people who want a simple and enjoyable way to listen.</p>
+        <div class="hero-actions">
+          <a href="#download" class="btn btn-primary">Download Zybe APK</a>
+          <a href="#features" class="btn btn-ghost">Explore Features</a>
+        </div>
+      </div>
+      <div class="visual">
+        <div class="wave-field" aria-hidden="true" id="waveField"></div>
+        <div class="phone" role="img" aria-label="Zybe music player screen preview">
+          <div class="phone-screen phone-screen--photo">
+            <img src="screenshots/player.png" alt="Zybe player screen playing Young And Beautiful by Lana Del Rey">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="wrap">
+      <div class="head">
+        <h2>What Zybe does today</h2>
+        <p>Only features that actually exist in the app are listed below. Anything still in progress is marked clearly.</p>
+      </div>
+      <div class="feature-grid">
+        <div class="f-card"><div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg></div><h3>Free to use</h3><p>No subscription required to listen.</p></div>
+        <div class="f-card"><div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 9h8M8 13h5"/></svg></div><h3>Clean interface</h3><p>A simple layout that stays out of your way.</p></div>
+        <div class="f-card"><div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg></div><h3>Fast on Android</h3><p>Lightweight and quick to open.</p></div>
+        <div class="f-card"><div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.8-4.8"/></svg></div><h3>Search</h3><p>Find tracks and artists quickly.</p></div>
+        <div class="f-card"><div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></div><h3>Playlists</h3><p>Group your favourite tracks together.</p></div>
+        <div class="f-card"><div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5Z" fill="currentColor" stroke="none"/></svg></div><h3>Background playback</h3><p>Keep listening while you use other apps.</p></div>
+        <div class="f-card"><div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2" y="14" width="5" height="6" rx="1.5"/><rect x="17" y="14" width="5" height="6" rx="1.5"/></svg></div><h3>Music player</h3><p>Core playback controls for your library.</p></div>
+        <div class="f-card"><div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 3.76a13 13 0 0 0-17.4 11.4c-.1 1.2-.1 2.4 0 3.6a.9.9 0 0 0 1 .8c1.2.1 2.4.1 3.6 0a13 13 0 0 0 11.4-17.4Z"/><path d="M13 11 4.5 19.5"/></svg></div><h3>Lightweight experience</h3><p>Built to be small and efficient on-device.</p></div>
+        <div class="f-card">
+          <div class="soon">Coming soon</div>
+          <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.5-8.97A6 6 0 0 1 18 10a4 4 0 0 1-1 7.9"/><path d="M12 12v6m0 0-2.5-2.5M12 18l2.5-2.5"/></svg></div><h3>Offline downloads</h3><p>Planned for a future release.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP PREVIEW -->
+  <section id="preview">
+    <div class="wrap">
+      <div class="head">
+        <h2>A look inside Zybe</h2>
+        <p>Placeholder screens shown below — replace with real Zybe screenshots any time (see README).</p>
+      </div>
+      <div class="preview-strip">
+        <div class="preview-card">
+          <div class="preview-frame"><div class="preview-screen"><img src="screenshots/home.png" alt="Zybe home screen with quick picks and history"></div></div>
+          <div class="preview-label">Home</div>
+        </div>
+        <div class="preview-card">
+          <div class="preview-frame"><div class="preview-screen"><img src="screenshots/search.png" alt="Zybe search screen showing results"></div></div>
+          <div class="preview-label">Search</div>
+        </div>
+        <div class="preview-card">
+          <div class="preview-frame"><div class="preview-screen"><img src="screenshots/player.png" alt="Zybe player screen"></div></div>
+          <div class="preview-label">Player</div>
+        </div>
+        <div class="preview-card">
+          <div class="preview-frame"><div class="preview-screen"><img src="screenshots/library.png" alt="Zybe library screen showing playlists"></div></div>
+          <div class="preview-label">Library</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section id="why">
+    <div class="wrap">
+      <div class="head">
+        <h2>Why Zybe?</h2>
+        <p>A simple, free and user-focused music app — nothing more, nothing less.</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-card"><span class="num">01</span><h3>Simple</h3><p>An interface that's easy to pick up right away.</p></div>
+        <div class="why-card"><span class="num">02</span><h3>Free</h3><p>No cost to download or listen.</p></div>
+        <div class="why-card"><span class="num">03</span><h3>Fast</h3><p>Lightweight and responsive on Android.</p></div>
+        <div class="why-card"><span class="num">04</span><h3>User-focused</h3><p>Built around what listeners actually need.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARE -->
+  <section id="compare">
+    <div class="wrap">
+      <div class="head">
+        <h2>Zybe vs Spotify</h2>
+        <p>A factual, feature-level comparison. No exaggerated claims.</p>
+      </div>
+      <div class="compare-wrap">
+        <table>
+          <thead><tr><th>Feature</th><th><img src="icons/app-icon.png" alt="" class="th-icon">Zybe</th><th><span class="th-icon th-icon--generic" aria-hidden="true">♪</span>Spotify</th></tr></thead>
+          <tbody>
+            <tr><td>Free to download</td><td class="yes">Yes</td><td class="zybe-col">Yes</td></tr>
+            <tr><td>Android app</td><td class="yes">Yes</td><td class="zybe-col">Yes</td></tr>
+            <tr><td>Direct APK download from official site</td><td class="yes">Yes</td><td class="zybe-col">No</td></tr>
+            <tr><td>Music streaming</td><td class="yes">Yes*</td><td class="zybe-col">Yes</td></tr>
+            <tr><td>Search</td><td class="yes">Yes*</td><td class="zybe-col">Yes</td></tr>
+            <tr><td>Playlists</td><td class="yes">Yes*</td><td class="zybe-col">Yes</td></tr>
+            <tr><td>Background playback</td><td class="yes">Yes*</td><td class="zybe-col">Depends on account/app features</td></tr>
+            <tr><td>Ad-free listening</td><td class="yes">Yes*</td><td class="zybe-col">Free tier shows ads</td></tr>
+            <tr><td>Offline playback</td><td class="yes">Yes*</td><td class="zybe-col">Premium only</td></tr>
+            <tr><td>Sleep timer</td><td class="yes">Yes*</td><td class="zybe-col">Premium only</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="compare-note">*Availability depends on the current Zybe app version and implemented features. Spotify column reflects its free tier.</p>
+      <div class="disclaim">Zybe is an independent product and is not affiliated with Spotify.</div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD -->
+  <section id="download">
+    <div class="wrap">
+      <div class="cta-block">
+        <img src="icons/app-icon.png" alt="Zybe app icon" class="cta-icon">
+        <h2>Ready to try Zybe?</h2>
+        <p>Download the latest Android APK and start listening.</p>
+        <a href="downloads/Zybe.apk" download class="btn btn-primary" id="downloadBtn">Download Zybe APK</a>
+        <div class="meta-row">
+          <div><b id="metaVersion">v1.0.0</b>Version</div>
+          <div><b>Android</b>Platform</div>
+          <div><b id="metaFile">Zybe.apk</b>File</div>
+          <div><b id="metaSize">—</b>Size</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALL -->
+  <section id="install">
+    <div class="wrap">
+      <div class="head">
+        <h2>How to install Zybe</h2>
+        <p>Android may ask for permission to install apps from your browser, depending on your device settings — this is normal for apps installed outside the Play Store.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div><h3>Download the Zybe APK</h3><p>Tap the download button above to save the file to your device.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div><h3>Open the downloaded file</h3><p>Find Zybe.apk in your downloads and open it.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div><h3>Follow Android's install prompts</h3><p>Confirm the install permission if asked, then open Zybe.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="head">
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div id="faqList">
+        <div class="faq-item">
+          <button class="faq-q">What is Zybe?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Zybe is a free, independent Android music app built for simple, everyday listening.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Is Zybe free?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes. Zybe is free to download and use.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Is Zybe available on Android?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Yes, Zybe is built for Android devices.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Where can I download Zybe?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Directly from this website — see the download section above.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">How do I install the Zybe APK?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Download it, open the file on your device, and follow Android's install prompts. See the installation guide above.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">How can I report a bug?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Use the "Report a Bug" button in the Support section, or email us directly.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">How can I request a new feature?<span class="plus">+</span></button>
+          <div class="faq-a"><p>Use the "Request a Feature" button in the Support section, or email us directly.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Is Zybe affiliated with Spotify?<span class="plus">+</span></button>
+          <div class="faq-a"><p>No. Zybe is an independent project and is not affiliated with Spotify.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPPORT -->
+  <section id="support">
+    <div class="wrap">
+      <div class="head">
+        <h2>Need help?</h2>
+        <p>Reach us any time at <a href="mailto:webloom.in00@gmail.com" style="color:var(--gold)">webloom.in00@gmail.com</a>.</p>
+      </div>
+      <div class="support-grid">
+        <div class="sup-card">
+          <h3>Report a bug</h3>
+          <p>Found something broken? Let us know and we'll take a look.</p>
+          <a class="btn btn-ghost btn-sm" href="mailto:webloom.in00@gmail.com?subject=Zybe%20Bug%20Report">Report a Bug</a>
+        </div>
+        <div class="sup-card">
+          <h3>Request a feature</h3>
+          <p>Have an idea that would make Zybe better? Tell us about it.</p>
+          <a class="btn btn-ghost btn-sm" href="mailto:webloom.in00@gmail.com?subject=Zybe%20Feature%20Request">Request a Feature</a>
+        </div>
+      </div>
+      <p class="compare-note" style="margin-top:20px;">When reporting a bug, include your Zybe version, Android version, device model and a short description of the problem.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#top" class="brand"><img src="icons/app-icon.png" alt="" class="brand-icon">Zybe</a>
+        <p style="color:var(--muted); font-size:14px; max-width:280px; margin-top:12px;">An independent music app built for a simple, free music experience.</p>
+      </div>
+      <div class="foot-links">
+        <a href="#top">Home</a>
+        <a href="#features">Features</a>
+        <a href="#compare">Compare</a>
+        <a href="#faq">FAQ</a>
+        <a href="#support">Support</a>
+        <a href="#download">Download APK</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Zybe. All rights reserved. · Support: webloom.in00@gmail.com</span>
+      <span>Zybe is not affiliated with Spotify.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---- Easy-to-edit release config ----
+  const RELEASE = { version: "v1.0.0", file: "Zybe.apk", sizeMB: "40.8" };
+  document.getElementById('metaVersion').textContent = RELEASE.version;
+  document.getElementById('metaFile').textContent = RELEASE.file;
+  document.getElementById('metaSize').textContent = RELEASE.sizeMB + " MB";
+  document.getElementById('downloadBtn').setAttribute('href', 'downloads/' + RELEASE.file);
+
+  // Hero waveform bars
+  const waveField = document.getElementById('waveField');
+  const heights = [30,55,80,45,95,60,40,75,50,88,35,65,90,42,58];
+  heights.forEach((h,i)=>{
+    const bar = document.createElement('span');
+    bar.style.height = h + 'px';
+    bar.style.animationDelay = (i*0.07) + 's';
+    waveField.appendChild(bar);
+  });
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    q.addEventListener('click', ()=>{
+      const open = item.getAttribute('data-open') === 'true';
+      document.querySelectorAll('.faq-item').forEach(i=>{
+        i.setAttribute('data-open','false');
+        i.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if(!open){
+        item.setAttribute('data-open','true');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
